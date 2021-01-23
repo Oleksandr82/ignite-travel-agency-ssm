@@ -1,0 +1,63 @@
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+    org.springframework.http.server.reactive: debug
+    org.springframework.web.reactive: debug
+    org.springframework.boot.autoconfigure.web: debug
+    reactor.netty: debug
+
+server:
+  port: 9090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+
+spring:
+  application:
+    name: travel-agency-gateway
+
+  zipkin:
+    base-url: http://localhost:9411/
+
+  cloud:
+
+    # Debug routes
+    gateway:
+      httpserver:
+        wiretap: true
+      httpclient:
+        wiretap: true
+
+      routes:
+
+      - id: travel-agent-service
+        # uri: http://localhost:8080
+        uri: lb://travel-agent-service
+        predicates:
+        - Path=/api/v1/travel
+
+      - id: hotel-reservation-service
+        # uri: http://localhost:8081
+        uri: lb://hotel-reservation-service
+        predicates:
+        - Path=/api/v1/booking/{bookingId}/hotel
+
+      - id: flight-reservation-service
+        # uri: http://localhost:8082
+        uri: lb://flight-reservation-service
+        predicates:
+        - Path=/api/v1/booking/{bookingId}/plane
+
+      - id: car-rental-service
+        # uri: http://localhost:8083
+        uri: lb://car-rental-service
+        predicates:
+          - Path=/api/v1/booking/{bookingId}/car/{carId},/api/v1/booking/cars

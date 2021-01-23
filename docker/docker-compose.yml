@@ -1,0 +1,33 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd
+    ports:
+      - 3306:3306
+
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 9091:8080
+
+  activemq:
+    image: vromero/activemq-artemis
+    environment:
+      ARTEMIS_USERNAME: artemis
+      ARTEMIS_PASSWORD: simetraehcapa
+    ports:
+      - 8161:8161
+      - 61616:61616
+      
+  zipkin:
+    image: openzipkin/zipkin-slim
+    ports:
+      - 9411:9411

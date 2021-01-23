@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.7.RELEASE</version>
+        <relativePath /> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>tech.demo.ssm</groupId>
+    <artifactId>travel-agency-bom</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <description>Parent POM for Spring State Machine Demo project</description>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/gpl.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Oleksandr Sytnik</name>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>11</java.version>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <spring-cloud-contract.version>2.2.4.RELEASE</spring-cloud-contract.version>
+        <spring-statemachine.version>2.2.1.RELEASE</spring-statemachine.version>
+
+        <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+        <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
+        <hibernate.validator.version>6.1.5.Final</hibernate.validator.version>
+        <logstash-logback-encoder.version>6.4</logstash-logback-encoder.version>
+
+        <!-- Surefire plugin arg line property to suppress Unresolved Maven Property -->
+        <argLine>--illegal-access=permit</argLine>
+
+        <docker.image.prefix>ssm</docker.image.prefix>
+        <docker.image.name>${project.artifactId}</docker.image.name>
+
+    </properties>
+
+    <modules>
+        <module>service-discovery</module>
+        <module>api-gateway</module>
+        <module>config-server</module>
+        <module>car-rental</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-contract-dependencies</artifactId>
+                <version>${spring-cloud-contract.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <layers>
+                        <enabled>true</enabled>
+                        <includeLayerTools>true</includeLayerTools>
+                    </layers>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.defaultComponentModel=spring
+                        </compilerArg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.6.0,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>11</version>
+                                </requireJavaVersion>
+                                <requireReleaseDeps>
+                                    <onlyWhenRelease>true</onlyWhenRelease>
+                                    <message>Release builds must not have on snapshot dependencies</message>
+                                </requireReleaseDeps>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.33.0</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>${docker.image.prefix}/${docker.image.name}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <!--copies artifact to docker build dir in target-->
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <dockerFile>Dockerfile</dockerFile>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

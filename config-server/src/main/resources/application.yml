@@ -1,0 +1,21 @@
+logging:
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.web: DEBUG
+
+server.port: 8888
+
+spring:
+  application:
+    name: travel-agency-config-server
+  profiles:
+    active: native
+  security:
+    user:
+      name: configUser
+      password: configPassword
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/{application}/,classpath:/
