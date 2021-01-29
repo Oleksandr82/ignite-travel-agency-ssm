@@ -39,25 +39,21 @@ spring:
       routes:
 
       - id: travel-agent-service
-        # uri: http://localhost:8080
         uri: lb://travel-agent-service
         predicates:
-        - Path=/api/v1/travel
+        - Path=/api/v1/booking/travel
 
       - id: hotel-reservation-service
-        # uri: http://localhost:8081
         uri: lb://hotel-reservation-service
         predicates:
-        - Path=/api/v1/booking/{bookingId}/hotel
+        - Path=/api/v1/hotes,/api/v1/hotes/{hotelId}
 
       - id: flight-reservation-service
-        # uri: http://localhost:8082
         uri: lb://flight-reservation-service
         predicates:
-        - Path=/api/v1/booking/{bookingId}/plane
+        - Path=/api/v1/flights,/api/v1/flights/{flightId}
 
       - id: car-rental-service
-        # uri: http://localhost:8083
         uri: lb://car-rental-service
         predicates:
-          - Path=/api/v1/booking/{bookingId}/car/{carId},/api/v1/booking/cars
+          - Path=/api/v1/cars,/api/v1/cars/{carId}

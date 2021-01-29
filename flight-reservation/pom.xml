@@ -9,10 +9,10 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>car-rental-service</artifactId>
+    <artifactId>flight-reservation-service</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>Car Rental Service</name>
-    <description>Travel Agency: Car Rental Service</description>
+    <name>Flight Reservation Service</name>
+    <description>Travel Agency: Flight Reservation Service</description>
 
     <dependencies>
 

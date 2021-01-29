@@ -15,6 +15,12 @@
     <description>Travel Agency Config Server</description>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <!-- Configuration Server -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

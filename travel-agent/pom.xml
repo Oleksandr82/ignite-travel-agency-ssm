@@ -9,10 +9,10 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>car-rental-service</artifactId>
+    <artifactId>travel-agent-service</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>Car Rental Service</name>
-    <description>Travel Agency: Car Rental Service</description>
+    <name>Travel Agent Service</name>
+    <description>Travel Agency: Travel Agent Service</description>
 
     <dependencies>
 
@@ -39,6 +39,12 @@
             <artifactId>spring-cloud-starter-zipkin</artifactId>
         </dependency>
 
+        <!-- Feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!-- JMS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +56,12 @@
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
             <version>${logstash-logback-encoder.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
 
         <dependency>

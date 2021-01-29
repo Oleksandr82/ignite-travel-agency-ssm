@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: travel-agent-service
+  cloud:
+    config:
+      discovery:
+        service-id: travel-agency-config-server
+        enabled: true
+      fail-fast: true
+      username: configUser
+      password: configPassword
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eurekaUser:eurekaPassword@localhost:8761/eureka/

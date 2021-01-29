@@ -1,0 +1,20 @@
+server.port: 8080
+
+feign.client.config:
+  default:
+    connectTimeout: 5000
+    readTimeout: 5000
+    loggerLevel: full
+
+spring:
+  zipkin:
+    base-url: http://localhost:9411/
+    enabled: true
+  cloud:
+    config:
+      override-system-properties: false
+
+  # defaults for this docker image - vromero/activemq-artemis
+  artemis:
+    user: artemis
+    password: simetraehcapa
