@@ -11,11 +11,11 @@ public class TravelStatus {
 
     private UUID travelId;
 
-    private HotelReservationStatus hotelReservationStatus;
+    private HotelReservationResponse hotelReservationResponse;
 
-    private FlightReservationStatus flightReservationStatus;
+    private FlightReservationResponse flightReservationResponse;
 
-    private CarRentalStatus carRentalStatus;
+    private CarRentalResponse carRentalResponse;
 
     @Builder.Default
     private Status status = Status.IN_PROGRESS;

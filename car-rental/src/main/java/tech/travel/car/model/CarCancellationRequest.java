@@ -1,4 +1,4 @@
-package tech.travel.agent.model;
+package tech.travel.car.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +13,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlightReservationRequest {
+public class CarCancellationRequest {
 
     @NotNull
-    UUID bookingId;
+    private UUID bookingId;
 
-    @NotBlank
-    String code;
+    @NotNull
+    private UUID reservationId;
 }

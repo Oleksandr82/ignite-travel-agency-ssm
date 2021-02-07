@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import tech.travel.flight.model.FlightCancellationRequest;
 import tech.travel.flight.model.FlightInfo;
 import tech.travel.flight.model.FlightReservationRequest;
-import tech.travel.flight.model.FlightReservationStatus;
+import tech.travel.flight.model.FlightReservationResponse;
 import tech.travel.flight.model.FlightClass;
+import tech.travel.flight.model.FlightReservationStatus;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +19,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FlightReservationService {
-
-    public static final int CURRENCY_EXPONENT = 2;
 
     private final List<FlightInfo> flights = List.of(
 
@@ -54,7 +54,7 @@ public class FlightReservationService {
         return flights;
     }
 
-    public FlightReservationStatus bookFlight(FlightReservationRequest flightReservationRequest) {
+    public FlightReservationResponse bookFlight(FlightReservationRequest flightReservationRequest) {
 
         Optional<FlightInfo> flightInfo = flights.stream()
                 .filter(flight -> flightReservationRequest.getCode().equals(flight.getCode()))
@@ -63,17 +63,16 @@ public class FlightReservationService {
         return registerFlightReservationEvent(flightReservationRequest.getBookingId(), flightInfo);
     }
 
-    private FlightReservationStatus registerFlightReservationEvent(UUID bookingId, Optional<FlightInfo> flightInfo) {
+    private FlightReservationResponse registerFlightReservationEvent(UUID bookingId, Optional<FlightInfo> flightInfo) {
 
         OffsetDateTime eventDateTime = OffsetDateTime.now();
-        return FlightReservationStatus.builder()
+        return FlightReservationResponse.builder()
                 .id(UUID.randomUUID())
                 .bookingId(bookingId)
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .flightId(flightInfo.map(FlightInfo::getId).orElse(null))
-                .available(flightInfo.map(FlightInfo::isAvailable).orElse(false))
-                .found(flightInfo.isPresent())
+                .status(flightInfoToStatus(flightInfo.orElse(null)))
                 .build();
     }
 
@@ -82,5 +81,26 @@ public class FlightReservationService {
                 .filter(flight -> flightId.equals(flight.getId()))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    private FlightReservationStatus flightInfoToStatus(FlightInfo flightInfo) {
+        if (flightInfo == null) {
+            return FlightReservationStatus.NOT_FOUND;
+        } else {
+            return flightInfo.isAvailable() ? FlightReservationStatus.OK : FlightReservationStatus.NOT_AVAILABLE;
+        }
+    }
+
+    public FlightReservationResponse cancel(FlightCancellationRequest flightCancellationRequest) {
+
+        OffsetDateTime eventDateTime = OffsetDateTime.now();
+        return FlightReservationResponse.builder()
+                .id(flightCancellationRequest.getReservationId())
+                .bookingId(flightCancellationRequest.getBookingId())
+                .createdDate(eventDateTime)
+                .lastModifiedDate(eventDateTime)
+                .flightId(UUID.randomUUID())
+                .status(FlightReservationStatus.CANCELLED)
+                .build();
     }
 }

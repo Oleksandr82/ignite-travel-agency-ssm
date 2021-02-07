@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import tech.travel.hotel.model.HotelCancellationRequest;
 import tech.travel.hotel.model.HotelInfo;
 import tech.travel.hotel.model.HotelReservationRequest;
+import tech.travel.hotel.model.HotelReservationResponse;
 import tech.travel.hotel.model.HotelReservationStatus;
 
 import java.math.BigDecimal;
@@ -45,7 +47,7 @@ public class HotelReservationService {
         return hotel;
     }
 
-    public HotelReservationStatus book(HotelReservationRequest hotelReservationRequest) {
+    public HotelReservationResponse book(HotelReservationRequest hotelReservationRequest) {
 
         Optional<HotelInfo> hotelInfo = hotel.stream()
                 .filter(hotel -> hotelReservationRequest.getName().equals(hotel.getHotelName()))
@@ -54,17 +56,24 @@ public class HotelReservationService {
         return registerBookingEvent(hotelReservationRequest.getBookingId(), hotelInfo);
     }
 
-    private HotelReservationStatus registerBookingEvent(UUID bookingId, Optional<HotelInfo> hotelInfo) {
+    private HotelReservationStatus hotelInfoToStatus(HotelInfo hotelInfo) {
+        if (hotelInfo == null) {
+            return HotelReservationStatus.NOT_FOUND;
+        } else {
+            return hotelInfo.isAvailable() ? HotelReservationStatus.OK : HotelReservationStatus.NOT_AVAILABLE;
+        }
+    }
+
+    private HotelReservationResponse registerBookingEvent(UUID bookingId, Optional<HotelInfo> hotelInfo) {
 
         OffsetDateTime eventDateTime = OffsetDateTime.now();
-        return HotelReservationStatus.builder()
+        return HotelReservationResponse.builder()
                 .id(UUID.randomUUID())
                 .bookingId(bookingId)
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .hotelId(hotelInfo.map(HotelInfo::getId).orElse(null))
-                .available(hotelInfo.map(HotelInfo::isAvailable).orElse(false))
-                .found(hotelInfo.isPresent())
+                .status(hotelInfoToStatus(hotelInfo.orElse(null)))
                 .build();
     }
 
@@ -73,5 +82,18 @@ public class HotelReservationService {
                 .filter(hotel -> hotelId.equals(hotel.getId()))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public HotelReservationResponse cancel(HotelCancellationRequest cancellationRequest) {
+
+        OffsetDateTime eventDateTime = OffsetDateTime.now();
+        return HotelReservationResponse.builder()
+                .id(cancellationRequest.getReservationId())
+                .bookingId(cancellationRequest.getBookingId())
+                .createdDate(eventDateTime)
+                .lastModifiedDate(eventDateTime)
+                .hotelId(UUID.randomUUID())
+                .status(HotelReservationStatus.CANCELLED.CANCELLED)
+                .build();
     }
 }

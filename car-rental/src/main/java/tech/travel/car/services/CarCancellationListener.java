@@ -6,21 +6,22 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import tech.travel.car.config.JmsConfig;
+import tech.travel.car.model.CarCancellationRequest;
 import tech.travel.car.model.CarRentalRequest;
 import tech.travel.car.model.CarRentalResponse;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class CarRentalListener {
+public class CarCancellationListener {
 
     private final CarRentalService carRentalService;
     private final JmsTemplate jmsTemplate;
 
-    @JmsListener(destination = JmsConfig.RENT_CAR_REQUEST)
-    public void listen(CarRentalRequest carRentalRequest) {
+    @JmsListener(destination = JmsConfig.CANCEL_CAR_REQUEST)
+    public void listen(CarCancellationRequest carCancellationRequest) {
 
-        CarRentalResponse carRentalResponse = carRentalService.rent(carRentalRequest);
-        jmsTemplate.convertAndSend(JmsConfig.RENT_CAR_RESPONSE, carRentalResponse);
+        CarRentalResponse carRentalResponse = carRentalService.cancel(carCancellationRequest);
+        jmsTemplate.convertAndSend(JmsConfig.CANCEL_CAR_RESPONSE, carRentalResponse);
     }
 }

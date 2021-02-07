@@ -15,6 +15,21 @@ and orchestrate a business transaction spanning multiple microservices.
 
 # API
 
+The workflow is set up in the following way:
+- book a flight, if it is successful:
+- book a hotel, if it is successful:
+- book a car, if it is successful:
+- if it is successful, return the overall result,
+- if there is an error on any of the stage, try cancelling previous bookings and return 'not found'.
+
+Value of parameters and overall result:
+
+| flightCode | hotelName | carName | Result |
+|---|---|---|---|
+| KL1009 | TULIP INN | Fiat | OK |
+| KL0000 | TULIP INN | Fiat | NOK, cancel on a flight |
+| KL1009 | Some Hotel | Fiat | NOK, cancel on a hotel after the flight is booked |
+| KL1009 | TULIP INN | NOT Fiat | NOK, cancel on a car after the flight and the hotel are booked |
 
 # How to run
 ## Option 1

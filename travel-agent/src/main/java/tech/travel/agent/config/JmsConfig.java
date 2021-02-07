@@ -10,12 +10,20 @@ import org.springframework.jms.support.converter.MessageType;
 @Configuration
 public class JmsConfig {
 
-    public static final String RENT_CAR_REQUEST = "rent-car-request";
-    public static final String RENT_CAR_RESPONSE = "rent-car-response";
-    public static final String BOOK_HOTEL_REQUEST = "book-hotel-request";
-    public static final String BOOK_HOTEL_RESPONSE = "book-hotel-response";
+    public static final String RENT_CAR_REQUEST = "car-reservation-request";
+    public static final String RENT_CAR_RESPONSE = "car-reservation-response";
+    public static final String CANCEL_CAR_REQUEST = "car-cancellation-request";
+    public static final String CANCEL_CAR_RESPONSE = "car-cancellation-response";
+
     public static final String FLIGHT_RESERVATION_REQUEST = "flight-reservation-request";
     public static final String FLIGHT_RESERVATION_RESPONSE = "flight-reservation-response";
+    public static final String FLIGHT_CANCELLATION_REQUEST = "flight-cancellation-request";
+    public static final String FLIGHT_CANCELLATION_RESPONSE = "flight-cancellation-response";
+
+    public static final String BOOK_HOTEL_REQUEST = "hotel-reservation-request";
+    public static final String BOOK_HOTEL_RESPONSE = "hotel-reservation-response";
+    public static final String CANCEL_HOTEL_REQUEST = "hotel-cancellation-request";
+    public static final String CANCEL_HOTEL_RESPONSE = "hotel-cancellation-response";
 
     public static final String TYPE_PROP_NAME = "_type";
 

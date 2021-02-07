@@ -12,6 +12,8 @@ public class JmsConfig {
 
     public static final String FLIGHT_RESERVATION_REQUEST = "flight-reservation-request";
     public static final String FLIGHT_RESERVATION_RESPONSE = "flight-reservation-response";
+    public static final String FLIGHT_CANCELLATION_REQUEST = "flight-cancellation-request";
+    public static final String FLIGHT_CANCELLATION_RESPONSE = "flight-cancellation-response";
     public static final String TYPE_PROP_NAME = "_type";
 
     @Bean

@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import tech.travel.car.model.CarCancellationRequest;
 import tech.travel.car.model.CarInfo;
 import tech.travel.car.model.CarRentalRequest;
+import tech.travel.car.model.CarRentalResponse;
 import tech.travel.car.model.CarRentalStatus;
 import tech.travel.car.model.Transmission;
 
@@ -52,7 +54,7 @@ public class CarRentalService {
         return cars;
     }
 
-    public CarRentalStatus rent(CarRentalRequest carRentalRequest) {
+    public CarRentalResponse rent(CarRentalRequest carRentalRequest) {
 
         Optional<CarInfo> carInfo = cars.stream()
                 .filter(car -> carRentalRequest.getName().equals(car.getName()))
@@ -61,17 +63,16 @@ public class CarRentalService {
         return registerCarRentEvent(carRentalRequest.getBookingId(), carInfo);
     }
 
-    private CarRentalStatus registerCarRentEvent(UUID bookingId, Optional<CarInfo> carInfo) {
+    private CarRentalResponse registerCarRentEvent(UUID bookingId, Optional<CarInfo> carInfo) {
 
         OffsetDateTime eventDateTime = OffsetDateTime.now();
-        return CarRentalStatus.builder()
+        return CarRentalResponse.builder()
                 .id(UUID.randomUUID())
                 .bookingId(bookingId)
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .carId(carInfo.map(CarInfo::getId).orElse(null))
-                .available(carInfo.map(CarInfo::isAvailable).orElse(false))
-                .found(carInfo.isPresent())
+                .status(carInfoToStatus(carInfo.orElse(null)))
                 .build();
     }
 
@@ -80,5 +81,26 @@ public class CarRentalService {
                 .filter(car -> carId.equals(car.getId()))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    private CarRentalStatus carInfoToStatus(CarInfo carInfo) {
+        if (carInfo == null) {
+            return CarRentalStatus.NOT_FOUND;
+        } else {
+            return carInfo.isAvailable() ? CarRentalStatus.OK : CarRentalStatus.NOT_AVAILABLE;
+        }
+    }
+
+    public CarRentalResponse cancel(CarCancellationRequest carCancellationRequest) {
+
+        OffsetDateTime eventDateTime = OffsetDateTime.now();
+        return CarRentalResponse.builder()
+                .id(carCancellationRequest.getReservationId())
+                .bookingId(carCancellationRequest.getBookingId())
+                .createdDate(eventDateTime)
+                .lastModifiedDate(eventDateTime)
+                .carId(UUID.randomUUID())
+                .status(CarRentalStatus.CANCELLED)
+                .build();
     }
 }
