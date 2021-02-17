@@ -41,19 +41,19 @@ spring:
       - id: travel-agent-service
         uri: lb://travel-agent-service
         predicates:
-        - Path=/api/v1/booking/travel
+        - Path=/api/v1/booking/trip,/api/v2/booking/trip
 
       - id: hotel-reservation-service
         uri: lb://hotel-reservation-service
         predicates:
-        - Path=/api/v1/hotes,/api/v1/hotes/{hotelId}
+        - Path=/api/v1/hotes,/api/v1/hotes/{hotelId},/api/v1/hotes/{reservationId}/cancelled
 
       - id: flight-reservation-service
         uri: lb://flight-reservation-service
         predicates:
-        - Path=/api/v1/flights,/api/v1/flights/{flightId}
+        - Path=/api/v1/flights,/api/v1/flights/{flightId},/api/v1/flights/{reservationId}/cancelled
 
       - id: car-rental-service
         uri: lb://car-rental-service
         predicates:
-          - Path=/api/v1/cars,/api/v1/cars/{carId}
+          - Path=/api/v1/cars,/api/v1/cars/{carId},/api/v1/cars/{reservationId}/cancelled

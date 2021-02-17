@@ -6,9 +6,8 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import tech.travel.flight.config.JmsConfig;
-import tech.travel.flight.model.FlightCancellationRequest;
-import tech.travel.flight.model.FlightReservationRequest;
-import tech.travel.flight.model.FlightReservationResponse;
+import tech.travel.model.FlightCancellationRequest;
+import tech.travel.model.FlightReservationResponse;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,7 +19,7 @@ public class FlightCancellationListener {
 
     @JmsListener(destination = JmsConfig.FLIGHT_CANCELLATION_REQUEST)
     public void listen(FlightCancellationRequest flightCancellationRequest) {
-
+        log.debug("Cancel a Flight reservation (JMS): {}", flightCancellationRequest);
         FlightReservationResponse flightReservationResult = flightReservationService.cancel(flightCancellationRequest);
         jmsTemplate.convertAndSend(JmsConfig.FLIGHT_CANCELLATION_RESPONSE, flightReservationResult);
     }

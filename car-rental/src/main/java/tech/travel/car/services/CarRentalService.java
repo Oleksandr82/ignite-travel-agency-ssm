@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import tech.travel.car.model.CarCancellationRequest;
+import tech.travel.model.CarCancellationRequest;
 import tech.travel.car.model.CarInfo;
-import tech.travel.car.model.CarRentalRequest;
-import tech.travel.car.model.CarRentalResponse;
-import tech.travel.car.model.CarRentalStatus;
+import tech.travel.model.CarRentalRequest;
+import tech.travel.model.CarRentalResponse;
+import tech.travel.model.CarRentalStatus;
 import tech.travel.car.model.Transmission;
 
 import java.math.BigDecimal;
@@ -60,7 +60,7 @@ public class CarRentalService {
                 .filter(car -> carRentalRequest.getName().equals(car.getName()))
                 .findFirst();
 
-        return registerCarRentEvent(carRentalRequest.getBookingId(), carInfo);
+        return registerCarRentEvent(carRentalRequest.getTripId(), carInfo);
     }
 
     private CarRentalResponse registerCarRentEvent(UUID bookingId, Optional<CarInfo> carInfo) {
@@ -68,7 +68,7 @@ public class CarRentalService {
         OffsetDateTime eventDateTime = OffsetDateTime.now();
         return CarRentalResponse.builder()
                 .id(UUID.randomUUID())
-                .bookingId(bookingId)
+                .tripId(bookingId)
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .carId(carInfo.map(CarInfo::getId).orElse(null))
@@ -96,7 +96,7 @@ public class CarRentalService {
         OffsetDateTime eventDateTime = OffsetDateTime.now();
         return CarRentalResponse.builder()
                 .id(carCancellationRequest.getReservationId())
-                .bookingId(carCancellationRequest.getBookingId())
+                .tripId(carCancellationRequest.getTripId())
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .carId(UUID.randomUUID())

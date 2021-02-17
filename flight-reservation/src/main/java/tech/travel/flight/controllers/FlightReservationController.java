@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import tech.travel.flight.model.FlightCancellationRequest;
+import tech.travel.model.FlightCancellationRequest;
 import tech.travel.flight.model.FlightInfo;
-import tech.travel.flight.model.FlightReservationRequest;
-import tech.travel.flight.model.FlightReservationResponse;
+import tech.travel.model.FlightReservationRequest;
+import tech.travel.model.FlightReservationResponse;
 import tech.travel.flight.services.FlightReservationService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,19 +49,19 @@ public class FlightReservationController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     FlightReservationResponse reserveFlight(@RequestBody @Valid FlightReservationRequest flightReservationRequest) {
-        log.debug("Rent a Flight");
+        log.debug("Reserve a Flight: {}", flightReservationRequest);
         return flightReservationService.bookFlight(flightReservationRequest);
     }
 
-    @PutMapping(value = "/{reservationId}/canceled", produces = MediaType.APPLICATION_JSON_VALUE)
-    FlightReservationResponse cancel(@PathVariable UUID reservationId,
+    @PutMapping(value = "/{reservationId}/cancelled", produces = MediaType.APPLICATION_JSON_VALUE)
+    FlightReservationResponse cancel(@PathVariable @NotNull UUID reservationId,
                                      @RequestBody @Valid FlightCancellationRequest cancellationRequest) {
 
-        if (reservationId != cancellationRequest.getReservationId()) {
+        if (!reservationId.equals(cancellationRequest.getReservationId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        log.debug("Cancel a Flight reservation");
+        log.debug("Cancel a Flight reservation: {}", cancellationRequest);
         return flightReservationService.cancel(cancellationRequest);
     }
 }

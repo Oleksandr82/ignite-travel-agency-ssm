@@ -41,9 +41,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
 
-        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR10</spring-cloud.version>
         <spring-cloud-contract.version>2.2.4.RELEASE</spring-cloud-contract.version>
-        <spring-statemachine.version>2.2.1.RELEASE</spring-statemachine.version>
+        <spring-statemachine.version>2.4.0</spring-statemachine.version>
 
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
         <hibernate.validator.version>6.1.5.Final</hibernate.validator.version>

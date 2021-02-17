@@ -6,8 +6,8 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import tech.travel.hotel.config.JmsConfig;
-import tech.travel.hotel.model.HotelReservationRequest;
-import tech.travel.hotel.model.HotelReservationResponse;
+import tech.travel.model.HotelReservationRequest;
+import tech.travel.model.HotelReservationResponse;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ public class HotelBookingListener {
 
     @JmsListener(destination = JmsConfig.BOOK_HOTEL_REQUEST)
     public void listen(HotelReservationRequest hotelReservationRequest) {
-
+        log.debug("Book a Hotel (JMS): {}", hotelReservationRequest);
         HotelReservationResponse carRentalResult = hotelReservationService.book(hotelReservationRequest);
         jmsTemplate.convertAndSend(JmsConfig.BOOK_HOTEL_RESPONSE, carRentalResult);
     }

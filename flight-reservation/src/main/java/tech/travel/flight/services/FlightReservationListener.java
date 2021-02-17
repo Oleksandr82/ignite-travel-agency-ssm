@@ -6,8 +6,8 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import tech.travel.flight.config.JmsConfig;
-import tech.travel.flight.model.FlightReservationRequest;
-import tech.travel.flight.model.FlightReservationResponse;
+import tech.travel.model.FlightReservationRequest;
+import tech.travel.model.FlightReservationResponse;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ public class FlightReservationListener {
 
     @JmsListener(destination = JmsConfig.FLIGHT_RESERVATION_REQUEST)
     public void listen(FlightReservationRequest flightReservationRequest) {
-
+        log.debug("Reserve a Flight (JMS): {}", flightReservationRequest);
         FlightReservationResponse flightReservationResult = flightReservationService.bookFlight(flightReservationRequest);
         jmsTemplate.convertAndSend(JmsConfig.FLIGHT_RESERVATION_RESPONSE, flightReservationResult);
     }

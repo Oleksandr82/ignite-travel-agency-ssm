@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import tech.travel.flight.model.FlightCancellationRequest;
+import tech.travel.model.FlightCancellationRequest;
 import tech.travel.flight.model.FlightInfo;
-import tech.travel.flight.model.FlightReservationRequest;
-import tech.travel.flight.model.FlightReservationResponse;
+import tech.travel.model.FlightReservationRequest;
+import tech.travel.model.FlightReservationResponse;
 import tech.travel.flight.model.FlightClass;
-import tech.travel.flight.model.FlightReservationStatus;
+import tech.travel.model.FlightReservationStatus;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -60,7 +60,7 @@ public class FlightReservationService {
                 .filter(flight -> flightReservationRequest.getCode().equals(flight.getCode()))
                 .findFirst();
 
-        return registerFlightReservationEvent(flightReservationRequest.getBookingId(), flightInfo);
+        return registerFlightReservationEvent(flightReservationRequest.getTripId(), flightInfo);
     }
 
     private FlightReservationResponse registerFlightReservationEvent(UUID bookingId, Optional<FlightInfo> flightInfo) {
@@ -68,7 +68,7 @@ public class FlightReservationService {
         OffsetDateTime eventDateTime = OffsetDateTime.now();
         return FlightReservationResponse.builder()
                 .id(UUID.randomUUID())
-                .bookingId(bookingId)
+                .tripId(bookingId)
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .flightId(flightInfo.map(FlightInfo::getId).orElse(null))
@@ -96,7 +96,7 @@ public class FlightReservationService {
         OffsetDateTime eventDateTime = OffsetDateTime.now();
         return FlightReservationResponse.builder()
                 .id(flightCancellationRequest.getReservationId())
-                .bookingId(flightCancellationRequest.getBookingId())
+                .tripId(flightCancellationRequest.getTripId())
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .flightId(UUID.randomUUID())
