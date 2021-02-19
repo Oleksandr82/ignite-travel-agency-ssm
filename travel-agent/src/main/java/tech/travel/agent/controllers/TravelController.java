@@ -28,13 +28,16 @@ public class TravelController {
 
     private final TravelService travelService;
 
-    @GetMapping(GET_TRAVEL_INFO)
+    @GetMapping(value = GET_TRAVEL_INFO,
+            produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     TripStatus getTravelInfo(@PathVariable UUID id) {
-
+        log.debug("Get Travel Info");
         return travelService.getTripStatus(id);
     }
 
-    @PostMapping (value = BOOK_TRIP, consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @PostMapping (value = BOOK_TRIP,
+            produces = MimeTypeUtils.APPLICATION_JSON_VALUE,
+            consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     TripStatus bookTravel(@RequestBody @Valid TripRequest tripRequest) {
         log.debug("Book a Travel");
         return travelService.bookTrip(tripRequest);

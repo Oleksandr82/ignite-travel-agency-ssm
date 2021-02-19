@@ -9,21 +9,21 @@ import tech.travel.agent.model.TripStatus;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StateMachineUtils {
 
-    public static final void setTripStatus(StateContext<ReservationState, ReservationEvent> context,
-                                           TripStatus status) {
-        context.getExtendedState().getVariables().put(MachineVariables.TRAVEL_STATUS, status);
+    public static void setTripStatus(StateContext<ReservationState, ReservationEvent> context,
+                                     TripStatus status) {
+        context.getExtendedState().getVariables().put(MachineVariables.TRIP_STATUS, status);
     }
 
-    public static final TripStatus getTripStatus(StateContext<ReservationState, ReservationEvent> context) {
-        return (TripStatus) context.getExtendedState().getVariables().getOrDefault(MachineVariables.TRAVEL_STATUS, null);
+    public static TripStatus getTripStatus(StateContext<ReservationState, ReservationEvent> context) {
+        return (TripStatus) context.getExtendedState().getVariables().getOrDefault(MachineVariables.TRIP_STATUS, null);
     }
 
-    public static final void setTravelRequest(StateContext<ReservationState, ReservationEvent> context,
-                                             TripRequest request) {
-        context.getExtendedState().getVariables().put(MachineVariables.TRAVEL_REQUEST, request);
+    public static void setTravelRequest(StateContext<ReservationState, ReservationEvent> context,
+                                        TripRequest request) {
+        context.getExtendedState().getVariables().put(MachineVariables.TRIP_REQUEST, request);
     }
 
-    public static final TripRequest getTravelRequest(StateContext<ReservationState, ReservationEvent> context) {
-        return (TripRequest) context.getExtendedState().getVariables().getOrDefault(MachineVariables.TRAVEL_REQUEST, null);
+    public static TripRequest getTravelRequest(StateContext<ReservationState, ReservationEvent> context) {
+        return (TripRequest) context.getExtendedState().getVariables().getOrDefault(MachineVariables.TRIP_REQUEST, null);
     }
 }

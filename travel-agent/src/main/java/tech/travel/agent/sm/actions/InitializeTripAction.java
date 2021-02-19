@@ -22,8 +22,8 @@ public class InitializeTripAction implements Action<ReservationState, Reservatio
     public void execute(StateContext<ReservationState, ReservationEvent> context) {
 
         MessageHeaders headers = context.getMessage().getHeaders();
-        TripRequest tripRequest = (TripRequest) headers.get(MachineConfig.TRAVEL_REQUEST_HEADER);
-        TripStatus tripStatus = (TripStatus) headers.get(MachineConfig.TRAVEL_STATUS_HEADER);
+        TripRequest tripRequest = (TripRequest) headers.get(MachineConfig.TRIP_REQUEST_HEADER);
+        TripStatus tripStatus = (TripStatus) headers.get(MachineConfig.TRIP_STATUS_HEADER);
 
         StateMachineUtils.setTravelRequest(context, tripRequest);
         StateMachineUtils.setTripStatus(context, tripStatus);

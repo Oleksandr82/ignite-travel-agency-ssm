@@ -1,10 +1,9 @@
 package tech.travel.agent.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import tech.travel.agent.mapper.TripRequestMapper;
+import tech.travel.agent.model.Status;
 import tech.travel.model.CarRentalResponse;
 import tech.travel.model.CarRentalStatus;
 import tech.travel.model.FlightCancellationRequest;
@@ -26,6 +25,7 @@ public class TravelService {
     private final HotelReservationService hotelReservationService;
     private final FlightReservationService flightReservationService;
     private final TripRequestMapper tripRequestMapper;
+    private final TripStatusService tripStatusService;
 
     public TripStatus bookTrip(TripRequest tripRequest) {
 
@@ -36,7 +36,9 @@ public class TravelService {
         FlightReservationResponse flightReservationResponse = flightReservationService.bookFlight(
                 tripRequestMapper.toFlightReservationRequest(travelId, tripRequest));
         if (FlightReservationStatus.OK != flightReservationResponse.getStatus()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return TripStatus.builder()
+                    .status(Status.FAILED)
+                    .build();
         }
 
         HotelReservationResponse hotelReservationResponse = hotelReservationService
@@ -47,7 +49,9 @@ public class TravelService {
                             .tripId(flightReservationResponse.getTripId())
                             .reservationId(flightReservationResponse.getId())
                             .build());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return TripStatus.builder()
+                    .status(Status.FAILED)
+                    .build();
         }
 
         CarRentalResponse carReservationResponse = carRentalService
@@ -63,18 +67,25 @@ public class TravelService {
                             .tripId(flightReservationResponse.getTripId())
                             .reservationId(flightReservationResponse.getId())
                             .build());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return TripStatus.builder()
+                    .status(Status.FAILED)
+                    .build();
         }
 
-        return TripStatus.builder()
+        TripStatus tripStatus = TripStatus.builder()
                 .travelId(travelId)
                 .hotelReservationResponse(hotelReservationResponse)
                 .flightReservationResponse(flightReservationResponse)
                 .carRentalResponse(carReservationResponse)
+                .status(Status.BOOKED_SUCCESSFULLY)
                 .build();
+
+        tripStatusService.save(tripStatus);
+
+        return tripStatus;
     }
 
     public TripStatus getTripStatus(UUID id) {
-        return TripStatus.builder().build();
+        return tripStatusService.findByTravelId(id).orElseThrow();
     }
 }

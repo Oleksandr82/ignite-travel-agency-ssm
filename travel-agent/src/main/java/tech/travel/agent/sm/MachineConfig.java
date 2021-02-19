@@ -20,8 +20,8 @@ import java.util.EnumSet;
 public class MachineConfig
         extends EnumStateMachineConfigurerAdapter<ReservationState, ReservationEvent> {
 
-    public static final String TRAVEL_REQUEST_HEADER = "TRAVEL_REQUEST_HEADER";
-    public static final String TRAVEL_STATUS_HEADER = "TRAVEL_STATUS_HEADER";
+    public static final String TRIP_REQUEST_HEADER = "TRIP_REQUEST_HEADER";
+    public static final String TRIP_STATUS_HEADER = "TRIP_STATUS_HEADER";
     public static final String CAR_RESERVATION_STATUS_HEADER = "CAR_RESERVATION_STATUS_HEADER";
     public static final String HOTEL_RESERVATION_STATUS_HEADER = "HOTEL_RESERVATION_STATUS_HEADER";
     public static final String FLIGHT_RESERVATION_STATUS_HEADER = "FLIGHT_RESERVATION_STATUS_HEADER";
@@ -58,7 +58,7 @@ public class MachineConfig
         states.withStates()
                 .initial(ReservationState.NEW)
                 .states(EnumSet.allOf(ReservationState.class))
-                .end(ReservationState.FAILED)
+                .end(ReservationState.NOT_AVAILABLE)
                 .end(ReservationState.COMPLETED)
                 .end(ReservationState.MANUAL_INTERVENTION_REQUIRED);
     }
@@ -90,7 +90,7 @@ public class MachineConfig
 
                 .and()
                 .withExternal()
-                .source(ReservationState.FLIGHT_COMPLETED).target(ReservationState.FAILED)
+                .source(ReservationState.FLIGHT_COMPLETED).target(ReservationState.NOT_AVAILABLE)
                 .guard(flightReservationFailedGuard)
 
                 .and()

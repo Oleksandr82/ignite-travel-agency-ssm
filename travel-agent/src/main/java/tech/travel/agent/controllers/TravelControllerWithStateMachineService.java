@@ -27,16 +27,18 @@ public class TravelControllerWithStateMachineService {
 
     private final TravelServiceWithStateMachine travelService;
 
-    @GetMapping(GET_TRIP_INFO_V2)
+    @GetMapping(value = GET_TRIP_INFO_V2,
+            produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     TripStatus getTravelInfo(@PathVariable UUID id) {
-        log.debug("Book Travel Info (v2)");
-        // TODO: Implement it
-        return TripStatus.builder().build();
+        log.debug("Get Travel Info (v2)");
+        return travelService.getTripInfo(id);
     }
 
-    @PostMapping (value = BOOK_TRAVEL_V2, consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @PostMapping (value = BOOK_TRAVEL_V2,
+            produces = MimeTypeUtils.APPLICATION_JSON_VALUE,
+            consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
     TripStatus bookTravel(@RequestBody @Valid TripRequest tripRequest) {
         log.debug("Book a Travel (v2)");
-        return travelService.bookTravel(tripRequest);
+        return travelService.bookTrip(tripRequest);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Component;
 import tech.travel.agent.config.JmsConfig;
 import tech.travel.agent.mapper.TripStatusMapper;
-import tech.travel.agent.model.TripRequest;
 import tech.travel.agent.model.TripStatus;
 import tech.travel.agent.sm.ReservationEvent;
 import tech.travel.agent.sm.ReservationState;

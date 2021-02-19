@@ -93,7 +93,7 @@ public class HotelReservationService {
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .hotelId(UUID.randomUUID())
-                .status(HotelReservationStatus.CANCELLED.CANCELLED)
+                .status(HotelReservationStatus.CANCELLED)
                 .build();
     }
 }
