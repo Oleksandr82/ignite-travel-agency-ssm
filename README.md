@@ -58,6 +58,8 @@ WIP. Please note, the following steps are in WIP phase and not available yet
 | travel-agency-config-server | 8888 | Externalized configuration |
 | Zipkin | 9411 | Distributed tracing |
 | ActiveMQ | 8161, 61616 | JMS |
+| Mongo | 27017 | | 
+| Mongo Express | 8091 | Mongo Admin UI |
 | MySQL | 3306 | RDBMS |
 
 ## Business Services

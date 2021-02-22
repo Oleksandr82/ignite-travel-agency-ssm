@@ -1,2 +1,7 @@
 logging.level.tech: debug
 
+spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      write-date-timestamps-as-nanoseconds: true

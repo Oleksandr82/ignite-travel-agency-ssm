@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import tech.travel.hotel.model.HotelCancellationRequest;
+import tech.travel.model.HotelCancellationRequest;
 import tech.travel.hotel.model.HotelInfo;
-import tech.travel.hotel.model.HotelReservationRequest;
-import tech.travel.hotel.model.HotelReservationResponse;
-import tech.travel.hotel.model.HotelReservationStatus;
+import tech.travel.model.HotelReservationRequest;
+import tech.travel.model.HotelReservationResponse;
+import tech.travel.model.HotelReservationStatus;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -53,7 +53,7 @@ public class HotelReservationService {
                 .filter(hotel -> hotelReservationRequest.getName().equals(hotel.getHotelName()))
                 .findFirst();
 
-        return registerBookingEvent(hotelReservationRequest.getBookingId(), hotelInfo);
+        return registerBookingEvent(hotelReservationRequest.getTripId(), hotelInfo);
     }
 
     private HotelReservationStatus hotelInfoToStatus(HotelInfo hotelInfo) {
@@ -69,7 +69,7 @@ public class HotelReservationService {
         OffsetDateTime eventDateTime = OffsetDateTime.now();
         return HotelReservationResponse.builder()
                 .id(UUID.randomUUID())
-                .bookingId(bookingId)
+                .tripId(bookingId)
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .hotelId(hotelInfo.map(HotelInfo::getId).orElse(null))
@@ -89,11 +89,11 @@ public class HotelReservationService {
         OffsetDateTime eventDateTime = OffsetDateTime.now();
         return HotelReservationResponse.builder()
                 .id(cancellationRequest.getReservationId())
-                .bookingId(cancellationRequest.getBookingId())
+                .tripId(cancellationRequest.getTripId())
                 .createdDate(eventDateTime)
                 .lastModifiedDate(eventDateTime)
                 .hotelId(UUID.randomUUID())
-                .status(HotelReservationStatus.CANCELLED.CANCELLED)
+                .status(HotelReservationStatus.CANCELLED)
                 .build();
     }
 }
