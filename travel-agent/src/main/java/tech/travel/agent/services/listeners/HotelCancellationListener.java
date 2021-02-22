@@ -8,29 +8,30 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.service.StateMachineService;
 import org.springframework.stereotype.Component;
 import tech.travel.agent.config.JmsConfig;
-import tech.travel.model.CarRentalResponse;
 import tech.travel.agent.sm.MachineConfig;
 import tech.travel.agent.sm.ReservationEvent;
 import tech.travel.agent.sm.ReservationState;
+import tech.travel.model.FlightReservationResponse;
+import tech.travel.model.HotelReservationResponse;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CarCancellationListener {
+public class HotelCancellationListener {
 
     private final StateMachineService<ReservationState, ReservationEvent> stateMachineService;
 
-    @JmsListener(destination = JmsConfig.CANCEL_CAR_RESPONSE)
-    public void completeCarCancellation(CarRentalResponse result) {
+    @JmsListener(destination = JmsConfig.CANCEL_HOTEL_RESPONSE)
+    public void completeHotelCancellation(HotelReservationResponse result) {
 
-        log.debug("Car Cancellation Result: {}", result);
+        log.debug("Flight Cancellation Response: {}", result);
 
         StateMachine<ReservationState, ReservationEvent> stateMachine = stateMachineService
                 .acquireStateMachine(result.getTripId().toString());
 
         stateMachine.sendEvent(MessageBuilder
-                .withPayload(ReservationEvent.CAR_CANCELLATION_COMPLETED)
-                .setHeader(MachineConfig.CAR_RESERVATION_STATUS_HEADER, result)
+                .withPayload(ReservationEvent.HOTEL_CANCELLATION_COMPLETED)
+                .setHeader(MachineConfig.HOTEL_RESERVATION_STATUS_HEADER, result)
                 .build());
     }
 }

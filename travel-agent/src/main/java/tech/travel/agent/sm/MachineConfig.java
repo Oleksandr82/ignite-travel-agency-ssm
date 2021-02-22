@@ -34,6 +34,10 @@ public class MachineConfig
     private final Action<ReservationState, ReservationEvent> completeHotelReservationAction;
     private final Action<ReservationState, ReservationEvent> completeCarReservationAction;
     private final Action<ReservationState, ReservationEvent> completeTripAction;
+    private final Action<ReservationState, ReservationEvent> cancelFlightReservationAction;
+    private final Action<ReservationState, ReservationEvent> completeFlightCancellationAction;
+    private final Action<ReservationState, ReservationEvent> cancelHotelReservationAction;
+    private final Action<ReservationState, ReservationEvent> completeHotelCancellationAction;
 
     private final Guard<ReservationState, ReservationEvent> flightReservationSucceededGuard;
     private final Guard<ReservationState, ReservationEvent> flightReservationFailedGuard;
@@ -103,7 +107,7 @@ public class MachineConfig
                 .withExternal()
                 .source(ReservationState.HOTEL_COMPLETED).target(ReservationState.FLIGHT_CANCELLATION_IN_PROGRESS)
                 .guard(hotelReservationFailedGuard)
-//                .action(cancelFlightAction)
+                .action(cancelFlightReservationAction)
 
                 .and()
                 .withExternal()
@@ -127,8 +131,28 @@ public class MachineConfig
                 .withExternal()
                 .source(ReservationState.CAR_COMPLETED).target(ReservationState.HOTEL_CANCELLATION_IN_PROGRESS)
                 .guard(carReservationFailedGuard)
-                //.action(cancelHotelAction)
-        ;
+                .action(cancelHotelReservationAction)
 
+                .and()
+                .withExternal()
+                .source(ReservationState.HOTEL_CANCELLATION_IN_PROGRESS).target(ReservationState.HOTEL_CANCELED)
+                .event(ReservationEvent.HOTEL_CANCELLATION_COMPLETED)
+                .action(completeFlightCancellationAction)
+
+                .and()
+                .withExternal()
+                .source(ReservationState.HOTEL_CANCELED).target(ReservationState.FLIGHT_CANCELLATION_IN_PROGRESS)
+                .action(cancelFlightReservationAction)
+
+                .and()
+                .withExternal()
+                .source(ReservationState.FLIGHT_CANCELLATION_IN_PROGRESS).target(ReservationState.FLIGHT_CANCELLED)
+                .event(ReservationEvent.FLIGHT_CANCELLATION_COMPLETED)
+                .action(completeHotelCancellationAction)
+
+                .and()
+                .withExternal()
+                .source(ReservationState.FLIGHT_CANCELLED).target(ReservationState.NOT_AVAILABLE)
+                .action(completeTripAction);
     }
 }

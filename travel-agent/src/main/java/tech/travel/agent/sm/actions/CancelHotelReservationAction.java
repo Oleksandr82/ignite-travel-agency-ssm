@@ -6,19 +6,22 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Component;
-import tech.travel.agent.config.JmsConfig;
 import tech.travel.agent.mapper.TripStatusMapper;
+import tech.travel.agent.model.TripRequest;
 import tech.travel.agent.model.TripStatus;
 import tech.travel.agent.sm.ReservationEvent;
 import tech.travel.agent.sm.ReservationState;
 import tech.travel.agent.sm.StateMachineUtils;
-import tech.travel.model.CarCancellationRequest;
+import tech.travel.model.FlightCancellationRequest;
+import tech.travel.model.HotelCancellationRequest;
 
+import static tech.travel.agent.config.JmsConfig.CANCEL_HOTEL_REQUEST;
+import static tech.travel.agent.config.JmsConfig.FLIGHT_CANCELLATION_REQUEST;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CancelCarReservationAction implements Action<ReservationState, ReservationEvent> {
+public class CancelHotelReservationAction implements Action<ReservationState, ReservationEvent> {
 
     private final JmsTemplate jmsTemplate;
     private final TripStatusMapper tripStatusMapper;
@@ -27,11 +30,12 @@ public class CancelCarReservationAction implements Action<ReservationState, Rese
     public void execute(StateContext<ReservationState, ReservationEvent> context) {
 
         TripStatus tripStatus = StateMachineUtils.getTripStatus(context);
-        CarCancellationRequest carCancellationRequest = tripStatusMapper
-                .toCarCancellationRequest(tripStatus.getTravelId(), tripStatus);
+        TripRequest tripRequest = StateMachineUtils.getTravelRequest(context);
+        HotelCancellationRequest flightCancellationRequest = tripStatusMapper
+                .toHotelCancellationRequest(tripStatus.getTravelId(), tripStatus);
 
-        jmsTemplate.convertAndSend(JmsConfig.CANCEL_CAR_REQUEST, carCancellationRequest);
+        jmsTemplate.convertAndSend(CANCEL_HOTEL_REQUEST, flightCancellationRequest);
 
-        log.debug("Travel: {} - Cancel Car Reservation request: {}", tripStatus, carCancellationRequest);
+        log.debug("Travel: {} - Send Hotel Cancellation request: {}", tripRequest, flightCancellationRequest);
     }
 }
