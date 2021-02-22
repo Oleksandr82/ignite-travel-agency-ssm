@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "824e8533-accc-45e1-8840-1d21866709a6",
+		"name": "Ignite - SSM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Book a car - direct call",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tripId\": \"9f805fff-1912-48a6-ae06-5c4b906f4179\",\n    \"name\": \"Audi\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/v1/cars",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book a car via API Gateway",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tripId\": \"9f805fff-1912-48a6-ae06-5c4b906f4179\",\n    \"name\": \"Audi\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/v1/cars",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"v1",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all cars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/v1/cars",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"v1",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Car Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/v1/cars/9f805fff-1912-48a6-ae06-5c4b906f4179",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"v1",
+						"cars",
+						"9f805fff-1912-48a6-ae06-5c4b906f4179"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book a Trip v1 - Successfully",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"travelName\": \"First travel\",\n    \"flightCode\": \"KL1009\",\n    \"hotelName\": \"TULIP INN\",\n    \"carName\": \"Fiat\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/booking/trip",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"booking",
+						"trip"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book a Trip v1 - Fail on Car",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"travelName\": \"First travel\",\n    \"flightCode\": \"KL1009\",\n    \"hotelName\": \"TULIP INN\",\n    \"carName\": \"Audi\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/booking/trip",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"booking",
+						"trip"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book a Trip v2 - Successfully",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"travelName\": \"First travel\",\n    \"flightCode\": \"KL1009\",\n    \"hotelName\": \"TULIP INN\",\n    \"carName\": \"Fiat\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v2/booking/trip",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v2",
+						"booking",
+						"trip"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book a Trip v2 - Fail on Car",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"travelName\": \"First travel\",\n    \"flightCode\": \"KL1009\",\n    \"hotelName\": \"TULIP INN\",\n    \"carName\": \"Audi\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v2/booking/trip",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v2",
+						"booking",
+						"trip"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book a Trip v2 - Status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v2/booking/trip/2bf4a88d-8429-45a4-a3c9-13a058a55ce1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v2",
+						"booking",
+						"trip",
+						"2bf4a88d-8429-45a4-a3c9-13a058a55ce1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
