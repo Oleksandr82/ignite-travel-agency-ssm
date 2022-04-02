@@ -5,6 +5,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.service.StateMachineService;
 import org.springframework.stereotype.Service;
+import tech.travel.agent.exception.TripNotFoundException;
 import tech.travel.agent.model.Status;
 import tech.travel.agent.model.TripRequest;
 import tech.travel.agent.model.TripStatus;
@@ -56,6 +57,7 @@ public class TravelServiceWithStateMachine {
     }
 
     public TripStatus getTripInfo(UUID travelId) {
-        return tripStatusService.findByTravelId(travelId).orElseThrow();
+        return tripStatusService.findByTravelId(travelId)
+                .orElseThrow(() -> new TripNotFoundException("travelId: " + travelId));
     }
 }

@@ -16,13 +16,21 @@ management:
         include: "*"
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     register-with-eureka: false
     fetch-registry: true
+    serviceUrl:
+      defaultZone: http://eurekaUser:eurekaPassword@localhost:8761/eureka/
 
 spring:
   application:
     name: travel-agency-gateway
+
+  sleuth:
+    sampler:
+      percentage: 1.0
 
   zipkin:
     base-url: http://localhost:9411/

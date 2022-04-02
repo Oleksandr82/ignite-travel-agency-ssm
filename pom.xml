@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>2.5.12</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -41,13 +41,13 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
 
-        <spring-cloud.version>Hoxton.SR10</spring-cloud.version>
-        <spring-cloud-contract.version>2.2.4.RELEASE</spring-cloud-contract.version>
-        <spring-statemachine.version>2.4.0</spring-statemachine.version>
+        <spring-cloud.version>2020.0.5</spring-cloud.version>
+        <spring-cloud-contract.version>3.0.5</spring-cloud-contract.version>
+        <spring-statemachine.version>2.5.0</spring-statemachine.version>
 
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
         <hibernate.validator.version>6.1.5.Final</hibernate.validator.version>
-        <logstash-logback-encoder.version>6.4</logstash-logback-encoder.version>
+        <logstash-logback-encoder.version>6.6</logstash-logback-encoder.version>
 
         <!-- Surefire plugin arg line property to suppress Unresolved Maven Property -->
         <argLine>--illegal-access=permit</argLine>
