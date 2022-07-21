@@ -4,6 +4,8 @@ Source code in this repository is to support a Spring Sate Machine presentation.
 The idea behind the project is to show how SSM can be used to implement a [Distributed Saga](https://github.com/aphyr/dist-sagas/blob/master/sagas.pdf) 
 and orchestrate a business transaction spanning multiple microservices.
 
+The presentation can be found here: [Orchestrating transactions over Microservices with Sagas and Spring Statemachine](https://speakerdeck.com/oleksandr82/orchestrating-transactions-over-microservices-with-sagas-and-spring-statemachine)
+
 # Implementation notes
 1. The project is implemented as a multi-module maven project to simplify development (in real life I would expect 
    that each service is implemented by a separate team as a standalone project, or perhaps it is 3rd party services, 
